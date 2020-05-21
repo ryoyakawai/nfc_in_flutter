@@ -9,8 +9,10 @@ class ReadExampleScreen extends StatefulWidget {
 
 class _ReadExampleScreenState extends State<ReadExampleScreen> {
   StreamSubscription<NDEFMessage> _stream;
+  String _toggle_button_state = "stop";
 
   void _startScanning() {
+    print("　>> Start Scanning");
     setState(() {
       _stream = NFC
           .readNDEF(alertMessage: "Custom message with readNDEF#alertMessage")
@@ -52,8 +54,12 @@ class _ReadExampleScreenState extends State<ReadExampleScreen> {
 
   void _toggleScan() {
     if (_stream == null) {
+      print("_startScanning()");
+      _toggle_button_state = "start";
       _startScanning();
     } else {
+      print("_stopScanning()");
+      _toggle_button_state = "stop";
       _stopScanning();
     }
   }
@@ -72,7 +78,7 @@ class _ReadExampleScreenState extends State<ReadExampleScreen> {
       ),
       body: Center(
           child: RaisedButton(
-        child: const Text("Toggle scan"),
+              child: Text(_toggle_button_state == 'stop' ? "Toggle Scan" : "Scanning"),
         onPressed: _toggleScan,
       )),
     );
